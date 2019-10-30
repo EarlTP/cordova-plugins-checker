@@ -1,4 +1,5 @@
 var execSync = require('child_process').execSync;
+const fs = require('fs');
 
 gulp.task("check-plugins", function () {
     const xml2js = require('xml2js');
@@ -26,18 +27,19 @@ gulp.task("check-plugins", function () {
                 var pluginVariable = pluginsXmlList[i].variable || [];
                 var installed = installedPlugins.hasOwnProperty(pluginName);
                 var toUpdate = false;
-                var toUpdateSpec = "";
                 var availableUpdateSpec = "";
 
                 if (semver.valid(pluginSpec)) {
                     if (installed) {
                         toUpdate = !semver.satisfies(installedPlugins[pluginName], pluginSpec);
-                        toUpdateSpec = pluginSpec;
                     }
-                    var registryVersion = checkRegistryVersion(pluginName);
+                    var registryVersion = getRegistryVersion(pluginName);
                     availableUpdateSpec = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + pluginSpec) ? registryVersion : "";
                 } else {
-
+                    var installedVersion = getInstalledVersion(pluginName);
+                    if (installed) {
+                        toUpdate = installedVersion !== pluginSpec;
+                    }
                 }
 
                 pluginsList.push({
@@ -46,7 +48,7 @@ gulp.task("check-plugins", function () {
                     variable: pluginVariable,
                     installed: installed,
                     toUpdate: toUpdate,
-                    toUpdateSpec: toUpdateSpec,
+                    toUpdateSpec: toUpdate ? "" : pluginSpec,
                     availableUpdateSpec: availableUpdateSpec
                 });
             }
@@ -88,19 +90,37 @@ gulp.task("check-plugins", function () {
     }
 
     if (withAvailableUpdate.length > 0) {
-        console.log("Plugins to with available update:");
+        console.log("Plugins with available update:");
         for (i = 0; i < withAvailableUpdate.length; i++) {
             console.log("- " + withAvailableUpdate[i].name + " - required: " + withAvailableUpdate[i].spec + " - available: " + withAvailableUpdate[i].availableUpdateSpec);
         }
     }
 });
 
-function checkRegistryVersion(pluginName) {
+function getRegistryVersion(pluginName) {
     var v = "";
     try {
         v = execSync("npm view " + pluginName + " version").toString().trim();
         if (!semver.valid(v)) {
             v = "";
+        }
+    } catch (e) {
+
+    }
+
+    return v;
+}
+
+function getInstalledVersion(pluginName) {
+    var v = "";
+    try {
+        var file = fs.readFileSync("./plugins/" + pluginName + "/package.json");
+        var json = JSON.parse(file);
+        if (json.hasOwnProperty("_spec")) {
+            v = json._spec;
+        }
+        if (v.length === 0 && json.hasOwnProperty("_requested") && json._requested.hasOwnProperty("raw")) {
+            v = json._requested.raw;
         }
     } catch (e) {
 

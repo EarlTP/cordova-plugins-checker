@@ -21,5 +21,11 @@
   "bugs": {
     "url": "https://github.com/EarlTP/cordova-plugins-checker/issues"
   },
-  "homepage": "https://github.com/EarlTP/cordova-plugins-checker#readme"
+  "homepage": "https://github.com/EarlTP/cordova-plugins-checker#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "consola": "^2.10.1",
+    "semver": "^6.3.0",
+    "xml2js": "^0.4.22"
+  }
 }
