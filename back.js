@@ -1,3 +1,5 @@
+var execSync = require('child_process').execSync;
+
 gulp.task("check-plugins", function () {
     const xml2js = require('xml2js');
     const fs = require('fs');
@@ -6,7 +8,8 @@ gulp.task("check-plugins", function () {
     var execSync = require('child_process').execSync;
     var xml_string = fs.readFileSync("config.xml", "utf8");
 
-    var i, pluginsList = [], installedPlugins = {}, pluginLs = execSync("cordova plugin ls").toString().split('\n');
+    var i, pluginsList = [], installedPlugins = {};
+    var pluginLs = execSync("cordova plugin ls").toString().trim().split('\n');
     for (i = 0; i < pluginLs.length; i++) {
         if(pluginLs[i].length > 0) {
             var row = pluginLs[i].split(" ");
@@ -24,8 +27,6 @@ gulp.task("check-plugins", function () {
                 var installed = installedPlugins.hasOwnProperty(pluginName);
                 var toUpdate = false;
                 var toUpdateSpec = "";
-
-                var registryVersion = checkRegistryVersion(pluginName);
                 var availableUpdateSpec = "";
 
                 if (semver.valid(pluginSpec)) {
@@ -33,6 +34,8 @@ gulp.task("check-plugins", function () {
                         toUpdate = !semver.satisfies(installedPlugins[pluginName], pluginSpec);
                         toUpdateSpec = pluginSpec;
                     }
+                    var registryVersion = checkRegistryVersion(pluginName);
+                    availableUpdateSpec = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + pluginSpec) ? registryVersion : "";
                 } else {
 
                 }
@@ -43,7 +46,8 @@ gulp.task("check-plugins", function () {
                     variable: pluginVariable,
                     installed: installed,
                     toUpdate: toUpdate,
-                    toUpdateSpec: toUpdateSpec
+                    toUpdateSpec: toUpdateSpec,
+                    availableUpdateSpec: availableUpdateSpec
                 });
             }
         } else {
@@ -51,14 +55,17 @@ gulp.task("check-plugins", function () {
         }
     });
 
-    var toInstall = [], toUpdate = [];
+    var toInstall = [], toUpdate = [], withAvailableUpdate = [];
     for (i = 0; i < pluginsList.length; i++) {
-        if (!pluginsList[i].installed) {
+        if (pluginsList[i].installed) {
+            if (pluginsList[i].toUpdate) {
+                toUpdate.push(pluginsList[i]);
+            }
+            if (pluginsList[i].availableUpdateSpec.length > 0) {
+                withAvailableUpdate.push(pluginsList[i]);
+            }
+        } else {
             toInstall.push(pluginsList[i]);
-        }
-
-        if (pluginsList[i].toUpdate) {
-            toUpdate.push(pluginsList[i]);
         }
     }
 
@@ -79,12 +86,19 @@ gulp.task("check-plugins", function () {
             console.log("- " + toUpdate[i].name);
         }
     }
+
+    if (withAvailableUpdate.length > 0) {
+        console.log("Plugins to with available update:");
+        for (i = 0; i < withAvailableUpdate.length; i++) {
+            console.log("- " + withAvailableUpdate[i].name + " - required: " + withAvailableUpdate[i].spec + " - available: " + withAvailableUpdate[i].availableUpdateSpec);
+        }
+    }
 });
 
 function checkRegistryVersion(pluginName) {
     var v = "";
     try {
-        v = execSync("npm view " + pluginName + " version").toString();
+        v = execSync("npm view " + pluginName + " version").toString().trim();
         if (!semver.valid(v)) {
             v = "";
         }
