@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugins-checker",
+  "version": "1.0.0",
+  "description": "Checks cordova plugins from xml",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cordova",
+    "plugin",
+    "check",
+    "update"
+  ],
+  "author": "Luca Chiavelli",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EarlTP/cordova-plugins-checker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/EarlTP/cordova-plugins-checker/issues"
+  },
+  "homepage": "https://github.com/EarlTP/cordova-plugins-checker#readme"
+}
