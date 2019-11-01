@@ -12,8 +12,8 @@ var execSync = require("child_process").execSync;
 
 
 function help() {
-    var helpText = fs.readFileSync(path.resolve(__dirname, 'usage.txt'), 'utf-8');
-    consola.info(helpText);
+    var helpText = fs.readFileSync(path.resolve(__dirname, "help.txt"), "utf-8");
+    console.log(helpText);
 }
 
 function start() {
@@ -153,11 +153,11 @@ function run() {
         }
 
         try {
-        /*var registryVersion = getRegistryVersion("cordova-plugins-checker");
-        var availableUpdate = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + version) ? registryVersion : "";
-        if (availableUpdate.length > 0 && semver.valid(availableUpdate)) {
-            consola.info("A new version of this plugin is available: " + availableUpdate);
-        }*/
+            var registryVersion = getRegistryVersion("cordova-plugins-checker");
+            var availableUpdate = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + version) ? registryVersion : "";
+            if (availableUpdate.length > 0 && semver.valid(availableUpdate)) {
+                consola.info("A new version of this plugin is available: " + availableUpdate);
+            }
         } catch (e) {
 
         }

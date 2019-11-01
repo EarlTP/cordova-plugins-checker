@@ -1,0 +1,15 @@
+Synopsis
+
+    cordova-plugins-checker [options]
+
+Description
+
+    Checks the plugins' version specified in the config.xml file with the current installed ones.
+
+    For those has a registry version it will check also if there is an available update.
+
+Options
+    -h, --help ...... Displays this help list.
+    -v, --version ...... Displays currently installed version of this module.
+
+For more details see the Github page: https://github.com/EarlTP/cordova-plugins-checker
