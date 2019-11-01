@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+var minimist = require("minimist");
 var fs = require("fs");
 var path = require("path");
 var xml2js = require("xml2js");
@@ -94,7 +95,7 @@ function start() {
     } else {
         consola.warn("Plugins to update:");
         for (i = 0; i < toUpdate.length; i++) {
-            consola.warn("- " + toUpdate[i].name);
+            consola.info("- " + toUpdate[i].name);
         }
     }
 
@@ -140,18 +141,38 @@ function getInstalledVersion(pluginName) {
 
 function run() {
     try {
-        consola.info("Running cordova-plugins-checker...");
-
-        var args = process.argv.slice(2);
+        var args = minimist(process.argv.slice(2));
+        var version = require('./package.json').version;
 
         if (args["v"] || args["version"]) {
-            return consola.info(require('./package.json').version);
+            return consola.info(version);
         }
 
         if (args["h"] || args["help"]) {
             return help();
         }
 
+        try {
+        /*var registryVersion = getRegistryVersion("cordova-plugins-checker");
+        var availableUpdate = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + version) ? registryVersion : "";
+        if (availableUpdate.length > 0 && semver.valid(availableUpdate)) {
+            consola.info("A new version of this plugin is available: " + availableUpdate);
+        }*/
+        } catch (e) {
+
+        }
+
+        try {
+            var cordovaVersion = execSync("cordova -v").toString().trim();
+            if (cordovaVersion.length === 0 || !semver.valid(cordovaVersion.split(" ")[0])) {
+                consola.error("Cordova not found!");
+                return;
+            }
+        } catch (e) {
+
+        }
+
+        consola.info("Running cordova-plugins-checker...");
         start();
     } catch (e) {
         consola.error(e);

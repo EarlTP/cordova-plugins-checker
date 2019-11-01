@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Checks cordova plugins from xml",
   "main": "index.js",
+  "bin": {
+    "cordova-plugins-checker": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,6 +28,7 @@
   "devDependencies": {},
   "dependencies": {
     "consola": "^2.10.1",
+    "minimist": "^1.2.0",
     "semver": "^6.3.0",
     "xml2js": "^0.4.22"
   }
