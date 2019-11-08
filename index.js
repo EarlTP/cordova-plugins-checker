@@ -6,6 +6,7 @@ var path = require("path");
 var xml2js = require("xml2js");
 var semver = require("semver");
 var consola = require("consola");
+var deferred = require("deferred");
 
 var parser = new xml2js.Parser({attrkey: "ATTR"});
 var execSync = require("child_process").execSync;
@@ -179,4 +180,20 @@ function run() {
     }
 }
 
-run();
+//run();
+
+
+module.exports = {
+    check: function () {
+        var def = deferred();
+
+        function a() {
+            consola.info("Running cordova-plugins-checker...asd");
+            def.resolve();
+        }
+
+        a();
+
+        return def.promise;
+    }
+};
