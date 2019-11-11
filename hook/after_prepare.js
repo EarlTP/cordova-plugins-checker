@@ -1,4 +1,4 @@
-var checkCordovaPlugins = require("cordova-plugins-checker").check();
+var checkCordovaPlugins = require("cordova-plugins-checker");
 
 module.exports = function (ctx) {
     var qModule = ctx.requireCordovaModule('q');
@@ -29,7 +29,7 @@ module.exports = function (ctx) {
     }
 
     console.log("-> project check");
-    return checkCordovaPlugins()
+    return checkCordovaPlugins.check()
         .then(function () {
             console.log("-> project check end");
         });

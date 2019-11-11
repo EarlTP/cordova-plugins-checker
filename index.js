@@ -44,8 +44,10 @@ function start() {
                     if (installed) {
                         toUpdate = !semver.satisfies(installedPlugins[pluginName], pluginSpec);
                     }
-                    var registryVersion = getRegistryVersion(pluginName);
-                    availableUpdateSpec = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + pluginSpec) ? registryVersion : "";
+                    if (checkAvailableUpdates) {
+                        var registryVersion = getRegistryVersion(pluginName);
+                        availableUpdateSpec = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + pluginSpec) ? registryVersion : "";
+                    }
                 } else {
                     var installedVersion = getInstalledVersion(pluginName);
                     if (installed) {
@@ -142,17 +144,6 @@ function getInstalledVersion(pluginName) {
 
 function run() {
     try {
-        var args = minimist(process.argv.slice(2));
-        var version = require('./package.json').version;
-
-        if (args["v"] || args["version"]) {
-            return consola.info(version);
-        }
-
-        if (args["h"] || args["help"]) {
-            return help();
-        }
-
         try {
             var registryVersion = getRegistryVersion("cordova-plugins-checker");
             var availableUpdate = registryVersion.length > 0 && semver.satisfies(registryVersion, ">" + version) ? registryVersion : "";
@@ -180,19 +171,37 @@ function run() {
     }
 }
 
-//run();
+var checkAvailableUpdates = false;
 
+var args = minimist(process.argv.slice(2));
+var version = require('./package.json').version;
+
+if (args["v"] || args["version"]) {
+    return consola.info(version);
+}
+
+if (args["h"] || args["help"]) {
+    return help();
+}
+
+if (args["au"] || args["available-updates"]) {
+    checkAvailableUpdates = true;
+}
+
+if (args["r"] || args["run"]) {
+    return run();
+}
 
 module.exports = {
     check: function () {
         var def = deferred();
 
-        function a() {
-            consola.info("Running cordova-plugins-checker...asd");
+        function runAsPromise() {
+            run();
             def.resolve();
         }
 
-        a();
+        runAsPromise();
 
         return def.promise;
     }

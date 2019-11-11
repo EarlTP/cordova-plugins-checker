@@ -6,10 +6,14 @@ Description
 
     Checks the plugins' version specified in the config.xml file with the current installed ones.
 
-    For those has a registry version it will check also if there is an available update.
-
 Options
-    -h, --help ...... Displays this help list.
-    -v, --version ...... Displays currently installed version of this module.
+    -r, -run                Use it to run the check from the CLI
+
+    -h, -help               Displays this help list.
+
+    -v, -version            Displays currently installed version of this module.
+
+    --au,
+    --available-updates     Checks if there is an available update (only for plugins from registry)
 
 For more details see the Github page: https://github.com/EarlTP/cordova-plugins-checker

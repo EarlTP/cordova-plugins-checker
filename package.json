@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugins-checker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Checks cordova plugins from xml",
   "main": "index.js",
   "bin": {
