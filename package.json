@@ -1,10 +1,10 @@
 {
   "name": "cordova-plugins-checker",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Checks cordova plugins from xml",
   "main": "index.js",
   "bin": {
-    "cordova-plugins-checker": "index.js"
+    "cordova-plugins-checker": "index-cli.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

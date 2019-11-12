@@ -7,8 +7,6 @@ Description
     Checks the plugins' version specified in the config.xml file with the current installed ones.
 
 Options
-    -r, -run                Use it to run the check from the CLI
-
     -h, -help               Displays this help list.
 
     -v, -version            Displays currently installed version of this module.
