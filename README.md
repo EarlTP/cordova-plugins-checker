@@ -1,5 +1,5 @@
 # cordova-plugins-checker
-Cordova Plugins Checker
+# ![npm](https://img.shields.io/npm/v/cordova-plugins-checker?style=plastic) ![npm](https://img.shields.io/npm/dt/cordova-plugins-checker?style=plastic)
 
 Checks the plugins' version specified in the config.xml file with the current installed ones.
 
