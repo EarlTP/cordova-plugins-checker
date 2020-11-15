@@ -77,7 +77,7 @@ function start() {
     }
 
     if (toInstall.length === 0) {
-        consola.success("Good! No plugin to install.");
+        consola.success("Great! No plugin to install.");
     } else {
         consola.info("Plugins to install:");
         for (i = 0; i < toInstall.length; i++) {

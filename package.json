@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugins-checker",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Checks cordova plugins from xml",
   "main": "index.js",
   "bin": {
@@ -29,7 +29,7 @@
   "dependencies": {
     "consola": "^2.10.1",
     "deferred": "^0.7.11",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.5",
     "semver": "^6.3.0",
     "xml2js": "^0.4.22"
   }

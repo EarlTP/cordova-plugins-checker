@@ -1,7 +1,11 @@
 var checkCordovaPlugins = require("cordova-plugins-checker");
 
 module.exports = function (ctx) {
-    var qModule = ctx.requireCordovaModule('q');
+    /*
+     * For old cordova versions use:
+     * var qModule = ctx.requireCordovaModule('q');
+     */
+    var qModule = require('q');
     var deferral = qModule.defer();
 
     var cmdParts = ctx.cmdLine.split(' ');
